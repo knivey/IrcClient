@@ -22,3 +22,17 @@ def test_cmd_withprefix():
     assert m.command == "001"
     assert str(m.sender) == "Portlane.SE.EU.GameSurge.net"
     assert m.params == ["grape", "Welcome to the GameSurge IRC Network via portlane.se, grape"]
+    m = Message(":Portlane.SE.EU.GameSurge.net ASDF")
+    assert m.command == "ASDF"
+    assert str(m.sender) == "Portlane.SE.EU.GameSurge.net"
+    assert not m.params
+    m = Message(":chunky!~chunky@living.my.best.autist.life PRIVMSG #420 :w/ $600")
+    assert m.command == "PRIVMSG"
+    assert str(m.sender) == "chunky!~chunky@living.my.best.autist.life"
+    assert m.params == ["#420", "w/ $600"]
+    m = Message(":chunky!~chunky@living.my.best.autist.life PRIVMSG #420 :w  /   $600")
+    assert m.params == ["#420", "w  /   $600"]
+    m = Message(":chunky!~chunky@living.my.best.autist.life PRIVMSG #420   :w  /   $600")
+    assert m.params == ["#420", "w  /   $600"]
+    m = Message(":chunky!~chunky@living.my.best.autist.life   PRIVMSG     #420   :w  /   $600")
+    assert m.params == ["#420", "w  /   $600"]
